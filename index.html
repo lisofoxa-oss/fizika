@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Физика за Алиса 🔬</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0f1117;
+  --card: #181b24;
+  --card-hover: #1e2230;
+  --accent1: #7c6ef5;
+  --accent2: #f5a623;
+  --accent3: #4ecdc4;
+  --accent4: #ff6b9d;
+  --text: #e8e6f0;
+  --text-dim: #9996ad;
+  --border: #2a2d3a;
+  --correct: #4ecdc4;
+  --wrong: #ff6b6b;
+}
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 30% 40%, rgba(124,110,245,0.15), transparent),
+    radial-gradient(ellipse 500px 350px at 70% 60%, rgba(78,205,196,0.1), transparent),
+    radial-gradient(ellipse 400px 300px at 50% 80%, rgba(255,107,157,0.08), transparent);
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent1), var(--accent3), var(--accent4));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  animation: fadeUp 0.8s ease;
+}
+
+.hero .subtitle {
+  font-size: 1.2rem;
+  color: var(--text-dim);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+
+.hero .emoji-line {
+  font-size: 2rem;
+  margin-top: 1rem;
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+
+/* Floating particles */
+.particles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: float linear infinite;
+}
+@keyframes float {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+}
+
+/* Navigation pills */
+.nav-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.5rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15,17,23,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-pill {
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.nav-pill:hover, .nav-pill.active {
+  border-color: var(--accent1);
+  color: var(--accent1);
+  background: rgba(124,110,245,0.1);
+  transform: translateY(-2px);
+}
+.nav-pill .num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent1);
+  color: white;
+  font-size: 0.7rem;
+  margin-right: 0.5rem;
+}
+
+/* Main content */
+.content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* Topic section */
+.topic {
+  margin-bottom: 4rem;
+  animation: fadeUp 0.6s ease;
+}
+
+.topic-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.topic-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.topic-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.topic-header .topic-tag {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 0.2rem;
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s;
+}
+.card:hover {
+  background: var(--card-hover);
+  border-color: rgba(124,110,245,0.3);
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.card p, .card li {
+  color: var(--text-dim);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.card p { margin-bottom: 0.8rem; }
+.card p:last-child { margin-bottom: 0; }
+
+.card strong { color: var(--text); font-weight: 600; }
+
+.card ul {
+  list-style: none;
+  padding: 0;
+}
+.card ul li {
+  padding: 0.3rem 0 0.3rem 1.5rem;
+  position: relative;
+}
+.card ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent1);
+}
+
+/* Formula box */
+.formula-box {
+  background: rgba(124,110,245,0.08);
+  border: 1px solid rgba(124,110,245,0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.2rem 0;
+  text-align: center;
+}
+.formula-box .formula {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem;
+  color: var(--accent1);
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+.formula-box .formula-desc {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+.formula-box .formula-desc span {
+  display: inline-block;
+  margin: 0.2rem 0.8rem;
+}
+
+/* Diagram */
+.diagram {
+  background: rgba(15,17,23,0.6);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.2rem 0;
+  display: flex;
+  justify-content: center;
+}
+.diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Key point */
+.key-point {
+  background: rgba(245,166,35,0.08);
+  border-left: 3px solid var(--accent2);
+  border-radius: 0 12px 12px 0;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.key-point .label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent2);
+  margin-bottom: 0.3rem;
+}
+
+/* Practice / Quiz */
+.quiz-section {
+  margin-top: 2rem;
+}
+.quiz-section h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--accent3);
+}
+
+.quiz-q {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.quiz-q .q-text {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+}
+.quiz-q .q-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--accent3);
+  margin-bottom: 0.4rem;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.quiz-opt {
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-align: left;
+  font-family: 'Source Sans 3', sans-serif;
+}
+.quiz-opt:hover:not(.selected) {
+  border-color: var(--accent3);
+  color: var(--text);
+  background: rgba(78,205,196,0.05);
+}
+.quiz-opt.correct {
+  border-color: var(--correct);
+  background: rgba(78,205,196,0.12);
+  color: var(--correct);
+}
+.quiz-opt.wrong {
+  border-color: var(--wrong);
+  background: rgba(255,107,107,0.1);
+  color: var(--wrong);
+}
+.quiz-opt.selected { pointer-events: none; }
+.quiz-opt.dimmed { opacity: 0.4; pointer-events: none; }
+
+.quiz-explanation {
+  display: none;
+  margin-top: 0.8rem;
+  padding: 1rem;
+  border-radius: 10px;
+  background: rgba(78,205,196,0.06);
+  border: 1px solid rgba(78,205,196,0.15);
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.quiz-explanation.show { display: block; animation: fadeUp 0.3s ease; }
+
+/* Score */
+.score-bar {
+  display: none;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  background: rgba(124,110,245,0.08);
+  border: 1px solid rgba(124,110,245,0.2);
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+.score-bar.show { display: block; animation: fadeUp 0.4s ease; }
+
+/* Tabs inside topic */
+.tab-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Source Sans 3', sans-serif;
+  transition: all 0.25s;
+}
+.tab-btn.active {
+  background: var(--accent1);
+  color: white;
+  border-color: var(--accent1);
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeUp 0.3s ease; }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border);
+  max-width: 860px;
+  margin: 0 auto;
+}
+.footer .heart { color: var(--accent4); }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .hero { min-height: 45vh; padding: 3rem 1.5rem; }
+  .content { padding: 1.5rem 1rem 3rem; }
+  .card { padding: 1.3rem; }
+  .topic-header h2 { font-size: 1.4rem; }
+  .formula-box .formula { font-size: 1.1rem; }
+}
+
+/* Progress indicator */
+.progress-wrap {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.progress-wrap .prog-emoji { font-size: 1.1rem; }
+</style>
+</head>
+<body>
+
+<!-- Particles -->
+<div class="particles" id="particles"></div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Физика за Алиса</h1>
+    <p class="subtitle">Всичко за изпита — ясно, кратко и с примери</p>
+    <p class="emoji-line">🌊 ☀️ ⚡ 💡</p>
+  </div>
+</section>
+
+<!-- Nav -->
+<nav class="nav-pills" id="nav">
+  <a class="nav-pill" href="#t1"><span class="num">1</span>Дифракционна решетка</a>
+  <a class="nav-pill" href="#t2"><span class="num">2</span>Топлинно излъчване</a>
+  <a class="nav-pill" href="#t3"><span class="num">3</span>Фотоефект</a>
+  <a class="nav-pill" href="#t4"><span class="num">4</span>Фотони</a>
+</nav>
+
+<div class="content">
+
+<!-- ═══════════ ТЕМА 1: ДИФРАКЦИОННА РЕШЕТКА ═══════════ -->
+<section class="topic" id="t1">
+  <div class="topic-header">
+    <div class="topic-icon" style="background:rgba(124,110,245,0.15);">🌊</div>
+    <div>
+      <h2>Дифракционна решетка</h2>
+      <div class="topic-tag">Вълнова оптика</div>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'t1-theory')">📖 Теория</button>
+    <button class="tab-btn" onclick="switchTab(this,'t1-examples')">✏️ Примери</button>
+    <button class="tab-btn" onclick="switchTab(this,'t1-quiz')">🎯 Тест</button>
+  </div>
+
+  <div class="tab-content active" id="t1-theory">
+    <div class="card">
+      <div class="card-title">🔍 Какво е дифракционна решетка?</div>
+      <p>Дифракционната решетка е <strong>прозрачна пластина</strong> с огромен брой еднакви, равномерно разположени тесни прорези (цепки). Светлината минава през тях и благодарение на <strong>дифракцията</strong> и <strong>интерференцията</strong> се разлага на спектрални линии — светли и тъмни петна.</p>
+      <p>Представи си, че светлината е като вълни в езеро, които минават през тесни отвори в стена — от другата страна вълните се припокриват и се получават места с по-силна и по-слаба вълна.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📐 Основни величини</div>
+      <p><strong>a</strong> — ширина на прореза (прозрачна част)</p>
+      <p><strong>b</strong> — разстояние между два прореза (непрозрачна част)</p>
+      <p><strong>d = a + b</strong> — <strong>константа (период)</strong> на дифракционната решетка — разстоянието от началото на един прорез до началото на следващия.</p>
+
+      <div class="formula-box">
+        <div class="formula">d = a + b</div>
+        <div class="formula-desc">
+          <span>d — период на решетката</span>
+          <span>a — ширина на прорез</span>
+          <span>b — разстояние между прорези</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚡ Условие за максимум (светла ивица)</div>
+      <p>Светла ивица се наблюдава, когато разликата в пътя на лъчите от съседни прорези е <strong>цяло число пъти дължината на вълната</strong>:</p>
+
+      <div class="formula-box">
+        <div class="formula">d · sin θ = k · λ</div>
+        <div class="formula-desc">
+          <span>d — период на решетката</span>
+          <span>θ — ъгъл на дифракция</span>
+          <span>k = 0, ±1, ±2… — ред на максимума</span>
+          <span>λ — дължина на вълната</span>
+        </div>
+      </div>
+
+      <div class="key-point">
+        <div class="label">💡 Запомни</div>
+        <p>k = 0 е <strong>централният максимум</strong> (нулев ред) — най-ярката ивица точно по средата. k = 1 е първи ред отляво и отдясно и т.н.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🌈 Защо решетката разлага бялата светлина?</div>
+      <p>Бялата светлина е смес от всички цветове с различни дължини на вълните (λ). Тъй като ъгълът θ зависи от λ, различните цветове се отклоняват под различни ъгли → получава се <strong>спектър</strong> (подобно на дъга).</p>
+      <p>Виолетовата светлина (малко λ ≈ 400 nm) се отклонява по-малко, а червената (голямо λ ≈ 700 nm) — повече.</p>
+    </div>
+  </div>
+
+  <div class="tab-content" id="t1-examples">
+    <div class="card">
+      <div class="card-title">📝 Пример 1</div>
+      <p><strong>Условие:</strong> Дифракционна решетка с период d = 5 μm = 5·10⁻⁶ m е осветена с монохроматична светлина с λ = 500 nm = 5·10⁻⁷ m. Под какъв ъгъл се наблюдава максимумът от първи ред (k = 1)?</p>
+      <div class="formula-box">
+        <div class="formula">sin θ = k·λ / d = 1 × 5·10⁻⁷ / 5·10⁻⁶ = 0,1</div>
+        <div class="formula-desc">θ = arcsin(0,1) ≈ <strong>5,7°</strong></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📝 Пример 2</div>
+      <p><strong>Условие:</strong> На 1 mm от решетка има 200 прореза. Намери периода d.</p>
+      <div class="formula-box">
+        <div class="formula">d = 1 mm / 200 = 0,005 mm = 5 μm = 5·10⁻⁶ m</div>
+        <div class="formula-desc">Просто дели общата дължина на броя прорези!</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📝 Пример 3</div>
+      <p><strong>Условие:</strong> При d = 2·10⁻⁶ m и λ = 600 nm, какъв е максималният ред k, който може да се наблюдава?</p>
+      <p>Максималният ъгъл е θ = 90° → sin 90° = 1</p>
+      <div class="formula-box">
+        <div class="formula">k_max = d / λ = 2·10⁻⁶ / 6·10⁻⁷ = 3,33 → k_max = 3</div>
+        <div class="formula-desc">Закръгляме надолу, защото k трябва да е цяло число.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="t1-quiz">
+    <div class="quiz-section">
+      <h3>🎯 Провери се</h3>
+      <div class="quiz-q" data-correct="1">
+        <div class="q-num">Въпрос 1 / 3</div>
+        <div class="q-text">Какво представлява „константата" d на дифракционната решетка?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Само ширината на прореза</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,true)">Разстоянието от началото на един прорез до началото на следващия (a + b)</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Общият брой прорези</button>
+        </div>
+        <div class="quiz-explanation">Константата (периодът) d = a + b е пълното разстояние, включващо прореза и непрозрачната част до следващия прорез.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="2">
+        <div class="q-num">Въпрос 2 / 3</div>
+        <div class="q-text">Ако увеличим дължината на вълната λ, ъгълът на дифракция θ ще:</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Намалее</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,true)">Нарасне</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Остане същият</button>
+        </div>
+        <div class="quiz-explanation">От формулата d·sin θ = k·λ → при по-голямо λ, sin θ расте → ъгълът нараства. Затова червената светлина (по-голямо λ) се отклонява повече от виолетовата.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="3">
+        <div class="q-num">Въпрос 3 / 3</div>
+        <div class="q-text">Решетка с d = 4·10⁻⁶ m е осветена с λ = 500 nm. Колко е sin θ за k = 2?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">0,125</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">0,5</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,true)">0,25</button>
+        </div>
+        <div class="quiz-explanation">sin θ = k·λ/d = 2 × 5·10⁻⁷ / 4·10⁻⁶ = 10⁻⁶ / 4·10⁻⁶ = 0,25 ✓</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ТЕМА 2: ТОПЛИННО ИЗЛЪЧВАНЕ ═══════════ -->
+<section class="topic" id="t2">
+  <div class="topic-header">
+    <div class="topic-icon" style="background:rgba(245,166,35,0.15);">☀️</div>
+    <div>
+      <h2>Топлинно излъчване</h2>
+      <div class="topic-tag">Квантова физика</div>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'t2-theory')">📖 Теория</button>
+    <button class="tab-btn" onclick="switchTab(this,'t2-examples')">✏️ Примери</button>
+    <button class="tab-btn" onclick="switchTab(this,'t2-quiz')">🎯 Тест</button>
+  </div>
+
+  <div class="tab-content active" id="t2-theory">
+    <div class="card">
+      <div class="card-title">🔍 Какво е топлинно излъчване?</div>
+      <p>Топлинното излъчване е <strong>пренасяне на топлина чрез електромагнитни вълни</strong>, излъчени от нагрято тяло. За разлика от конвекцията и топлопроводимостта, тук <strong>не е нужна материална среда</strong> — топлината може да се разпространява и през вакуум (така получаваме топлина от Слънцето!).</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📐 Закон на Стефан-Болцман</div>
+      <p>Мощността (енергията за единица време), излъчена от нагрято тяло, зависи от <strong>четвъртата степен</strong> на абсолютната температура:</p>
+
+      <div class="formula-box">
+        <div class="formula">P = σ · T⁴</div>
+        <div class="formula-desc">
+          <span>P — мощност на излъчване [W/m²]</span>
+          <span>σ ≈ 5,67·10⁻⁸ W/(m²·K⁴) — константа на Стефан-Болцман</span>
+          <span>T — абсолютна температура [K]</span>
+        </div>
+      </div>
+
+      <div class="key-point">
+        <div class="label">💡 Запомни</div>
+        <p>Температурата е на <strong>четвърта степен</strong>! Ако удвоиш температурата → мощността нараства <strong>2⁴ = 16 пъти</strong>! Това е огромна разлика.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🌡️ Абсолютно черно тяло</div>
+      <p><strong>Абсолютно черно тяло (АЧТ)</strong> е идеализиран обект, който поглъща цялата падаща върху него светлина и не отразява нищо. При дадена температура то излъчва <strong>максимално възможното количество енергия</strong>.</p>
+      <p>Законът на Стефан-Болцман е точен за АЧТ. За реални тела се добавя коефициент ε (емисивност, 0 &lt; ε ≤ 1):</p>
+      <div class="formula-box">
+        <div class="formula">P = ε · σ · T⁴</div>
+        <div class="formula-desc">ε = 1 за АЧТ, ε &lt; 1 за реални тела</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔴 Закон на Вин за изместването</div>
+      <p>С повишаване на температурата, максимумът на излъчване се мести към <strong>по-къси вълни</strong>:</p>
+      <div class="formula-box">
+        <div class="formula">λ_max · T = b</div>
+        <div class="formula-desc">
+          <span>b ≈ 2,898·10⁻³ m·K — константа на Вин</span>
+        </div>
+      </div>
+      <p>Затова студените звезди са <strong>червени</strong> (голямо λ), а горещите — <strong>сини</strong> (малко λ).</p>
+    </div>
+  </div>
+
+  <div class="tab-content" id="t2-examples">
+    <div class="card">
+      <div class="card-title">📝 Пример 1</div>
+      <p><strong>Условие:</strong> Тяло с температура T₁ = 300 K се нагрява до T₂ = 600 K. Колко пъти нараства мощността на излъчване?</p>
+      <div class="formula-box">
+        <div class="formula">P₂/P₁ = (T₂/T₁)⁴ = (600/300)⁴ = 2⁴ = 16</div>
+        <div class="formula-desc">Мощността нараства <strong>16 пъти</strong>!</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📝 Пример 2</div>
+      <p><strong>Условие:</strong> Повърхността на Слънцето е около T = 5800 K. На каква дължина на вълната е максимумът на излъчване?</p>
+      <div class="formula-box">
+        <div class="formula">λ_max = b / T = 2,898·10⁻³ / 5800 ≈ 500 nm</div>
+        <div class="formula-desc">Около 500 nm = зелено-жълта светлина — точно видимият диапазон!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="t2-quiz">
+    <div class="quiz-section">
+      <h3>🎯 Провери се</h3>
+      <div class="quiz-q">
+        <div class="q-num">Въпрос 1 / 3</div>
+        <div class="q-text">Топлинното излъчване се нуждае от материална среда (въздух, вода и т.н.) за да се разпространява.</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Да, вярно</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,true)">Не, топлинното излъчване е чрез електромагнитни вълни и минава през вакуум</button>
+        </div>
+        <div class="quiz-explanation">Точно! Топлинното излъчване е електромагнитна вълна — не се нуждае от среда. Затова Слънцето ни топли през космическия вакуум.</div>
+      </div>
+
+      <div class="quiz-q">
+        <div class="q-num">Въпрос 2 / 3</div>
+        <div class="q-text">Ако температурата на тяло се утрои (3×), колко пъти нараства мощността на излъчване?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">3 пъти</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">9 пъти</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,true)">81 пъти</button>
+        </div>
+        <div class="quiz-explanation">P ~ T⁴ → 3⁴ = 81 пъти! Степен 4 прави разликата огромна.</div>
+      </div>
+
+      <div class="quiz-q">
+        <div class="q-num">Въпрос 3 / 3</div>
+        <div class="q-text">Коя звезда е по-гореща — червена или синя?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Червената</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,true)">Синята</button>
+        </div>
+        <div class="quiz-explanation">По закона на Вин: по-висока температура → по-късо λ на максимума → синя. Червените звезди са по-хладни, сините — по-горещи.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ТЕМА 3: ФОТОЕЛЕКТРИЧЕН ЕФЕКТ ═══════════ -->
+<section class="topic" id="t3">
+  <div class="topic-header">
+    <div class="topic-icon" style="background:rgba(255,107,157,0.15);">⚡</div>
+    <div>
+      <h2>Фотоелектричен ефект</h2>
+      <div class="topic-tag">Квантова физика</div>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'t3-theory')">📖 Теория</button>
+    <button class="tab-btn" onclick="switchTab(this,'t3-examples')">✏️ Примери</button>
+    <button class="tab-btn" onclick="switchTab(this,'t3-quiz')">🎯 Тест</button>
+  </div>
+
+  <div class="tab-content active" id="t3-theory">
+    <div class="card">
+      <div class="card-title">🔍 Какво е фотоелектричен ефект?</div>
+      <p>Фотоелектричният ефект (фотоефект) е явление, при което <strong>от повърхността на метал се отделят електрони</strong>, когато върху нея пада светлина с достатъчно висока честота.</p>
+      <p>Простичко: светлината „избива" електрони от метала. Тези електрони се наричат <strong>фотоелектрони</strong>.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚡ Фототок</div>
+      <p><strong>Фототок</strong> е електрическият ток, създаден от движението на фотоелектроните. Когато фотоелектроните се ускорят от електрическо поле, те създават измерим ток.</p>
+      <p>Ако приложим обратно напрежение, което спира електроните, получаваме <strong>спиращ (задържащ) ток</strong> — чрез него можем да определим максималната кинетична енергия на електроните.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 Закономерности на фотоефекта</div>
+      <ul>
+        <li><strong>а) Мигновен</strong> — ефектът настъпва практически мигновено при осветяване.</li>
+        <li><strong>б) Енергията на електроните зависи от честотата</strong> (цвета) на светлината, НЕ от интензивността.</li>
+        <li><strong>в) Интензивността</strong> (яркостта) влияе на <strong>броя</strong> отделени електрони — по-ярко = повече електрони.</li>
+        <li><strong>г) Червена граница</strong> — съществува минимална честота ν₀ (максимална дължина на вълната λ₀), под която фотоефектът <strong>не настъпва</strong>, колкото и ярка да е светлината.</li>
+      </ul>
+
+      <div class="key-point">
+        <div class="label">💡 Ключово разбиране</div>
+        <p>Класическата физика не може да обясни фотоефекта! Тя предсказва, че при достатъчно ярка светлина електроните трябва да се отделят на всякаква честота. Но на практика: <strong>без минималната честота — няма ефект</strong>. Това доказва квантовата природа на светлината.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="t3-examples">
+    <div class="card">
+      <div class="card-title">📝 Пример 1</div>
+      <p><strong>Условие:</strong> Отделителната работа на калий е A₀ = 2,2 eV. Каква е червената граница (максималната дължина на вълната λ₀)?</p>
+      <p>Използваме: E = hν = hc/λ и при червената граница цялата енергия отива за отделителна работа:</p>
+      <div class="formula-box">
+        <div class="formula">λ₀ = hc / A₀</div>
+        <div class="formula-desc">
+          h = 6,63·10⁻³⁴ J·s &nbsp;|&nbsp; c = 3·10⁸ m/s &nbsp;|&nbsp; A₀ = 2,2 × 1,6·10⁻¹⁹ = 3,52·10⁻¹⁹ J
+        </div>
+      </div>
+      <div class="formula-box">
+        <div class="formula">λ₀ = (6,63·10⁻³⁴ × 3·10⁸) / 3,52·10⁻¹⁹ ≈ 565 nm</div>
+        <div class="formula-desc">Зелена светлина! По-дълги вълни (червена, оранжева) няма да предизвикат фотоефект.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📝 Пример 2 — Качествен</div>
+      <p><strong>Въпрос:</strong> Свети се с червена лампа върху метал — няма фотоефект. Какво трябва да промениш?</p>
+      <p><strong>Отговор:</strong> Трябва да увеличиш <strong>честотата</strong> (т.е. да използваш синя или ултравиолетова светлина). Увеличаването на яркостта на червената лампа <strong>няма да помогне</strong> — честотата е под червената граница.</p>
+    </div>
+  </div>
+
+  <div class="tab-content" id="t3-quiz">
+    <div class="quiz-section">
+      <h3>🎯 Провери се</h3>
+      <div class="quiz-q">
+        <div class="q-num">Въпрос 1 / 3</div>
+        <div class="q-text">От какво зависи кинетичната енергия на фотоелектроните?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">От интензивността (яркостта) на светлината</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,true)">От честотата (цвета) на светлината</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">От площта на метала</button>
+        </div>
+        <div class="quiz-explanation">Енергията на фотоелектроните зависи от честотата! По-висока честота = по-бързи електрони. Яркостта влияе само на БРОЯ на електроните.</div>
+      </div>
+
+      <div class="quiz-q">
+        <div class="q-num">Въпрос 2 / 3</div>
+        <div class="q-text">Какво е „червената граница" на фотоефекта?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkAnswer(this,true)">Минималната честота (максималната λ), при която фотоефектът все още настъпва</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Максималната яркост на светлината</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Максималният брой електрони, които могат да се отделят</button>
+        </div>
+        <div class="quiz-explanation">Червената граница е минималната честота ν₀ (или еквивалентно максималната λ₀) на светлината, за да настъпи фотоефект. Под нея — няма ефект.</div>
+      </div>
+
+      <div class="quiz-q">
+        <div class="q-num">Въпрос 3 / 3</div>
+        <div class="q-text">Увеличаваме яркостта на ултравиолетова лампа. Какво се случва?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Електроните стават по-бързи</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,true)">Отделят се повече електрони (фототокът нараства)</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Нищо не се променя</button>
+        </div>
+        <div class="quiz-explanation">По-ярко = повече фотони = повече избити електрони = по-голям фототок. Но скоростта на всеки електрон НЕ се променя — тя зависи от честотата.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ТЕМА 4: ФОТОНИ ═══════════ -->
+<section class="topic" id="t4">
+  <div class="topic-header">
+    <div class="topic-icon" style="background:rgba(78,205,196,0.15);">💡</div>
+    <div>
+      <h2>Фотони</h2>
+      <div class="topic-tag">Квантова физика</div>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'t4-theory')">📖 Теория</button>
+    <button class="tab-btn" onclick="switchTab(this,'t4-examples')">✏️ Примери</button>
+    <button class="tab-btn" onclick="switchTab(this,'t4-quiz')">🎯 Тест</button>
+  </div>
+
+  <div class="tab-content active" id="t4-theory">
+    <div class="card">
+      <div class="card-title">🔍 Какво е фотон?</div>
+      <p>Фотоните са <strong>кванти (порции) на електромагнитното излъчване</strong>. Те се движат със <strong>скоростта на светлината</strong> c = 3·10⁸ m/s и нямат маса на покой.</p>
+      <p>Светлината не е просто вълна — тя е поток от фотони. Всеки фотон носи определено количество енергия, зависещо от честотата.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚡ Енергия на фотон</div>
+      <div class="formula-box">
+        <div class="formula">E = h · ν = h · c / λ</div>
+        <div class="formula-desc">
+          <span>E — енергия на фотон [J] или [eV]</span>
+          <span>h = 6,63·10⁻³⁴ J·s — константа на Планк</span>
+          <span>ν — честота [Hz]</span>
+          <span>λ — дължина на вълната [m]</span>
+        </div>
+      </div>
+
+      <div class="key-point">
+        <div class="label">💡 Свържи с фотоефекта</div>
+        <p>Фотоефектът е доказателство за съществуването на фотони! Един фотон удря един електрон и му предава цялата си енергия.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📐 Уравнение на Айнщайн за фотоефекта</div>
+      <p>Когато фотон с енергия hν удари метал, енергията му отива за две неща:</p>
+      <ul>
+        <li><strong>A₀</strong> — отделителна работа (минималната енергия, за да „откъснеш" електрон от метала)</li>
+        <li><strong>E_к max</strong> — максимална кинетична енергия на отделения електрон</li>
+      </ul>
+
+      <div class="formula-box">
+        <div class="formula">h · ν = A₀ + E_к max</div>
+        <div class="formula-desc">
+          <span>hν — енергия на фотона</span>
+          <span>A₀ — отделителна работа</span>
+          <span>E_к max = ½mv² — макс. кинетична енергия</span>
+        </div>
+      </div>
+
+      <p>Ако hν &lt; A₀ → електронът <strong>не може</strong> да бъде отделен → няма фотоефект (това е червената граница!).</p>
+      <p>Ако hν = A₀ → електронът едва се отделя (нулева скорост).</p>
+      <p>Ако hν &gt; A₀ → електронът се отделя и „остатъкът" от енергията се превръща в кинетична енергия.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔢 Полезни единици</div>
+      <p><strong>1 eV = 1,6·10⁻¹⁹ J</strong> — електронволт, удобна единица за квантовата физика.</p>
+      <p><strong>1 nm = 10⁻⁹ m</strong> — нанометър, за дължини на вълни.</p>
+      <p><strong>h = 4,14·10⁻¹⁵ eV·s</strong> — константата на Планк в eV (удобно за задачи с eV).</p>
+    </div>
+  </div>
+
+  <div class="tab-content" id="t4-examples">
+    <div class="card">
+      <div class="card-title">📝 Пример 1</div>
+      <p><strong>Условие:</strong> Намери енергията на фотон с дължина на вълната λ = 400 nm (виолетова светлина).</p>
+      <div class="formula-box">
+        <div class="formula">E = hc/λ = (6,63·10⁻³⁴ × 3·10⁸) / 4·10⁻⁷</div>
+        <div class="formula-desc">E = 4,97·10⁻¹⁹ J ≈ <strong>3,1 eV</strong></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📝 Пример 2</div>
+      <p><strong>Условие:</strong> Фотон с E = 5 eV удря метал с A₀ = 2 eV. Каква е максималната кинетична енергия на електрона?</p>
+      <div class="formula-box">
+        <div class="formula">E_к max = hν − A₀ = 5 − 2 = 3 eV</div>
+        <div class="formula-desc">Остатъкът от енергията (3 eV) става кинетична енергия на електрона.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📝 Пример 3</div>
+      <p><strong>Условие:</strong> Отделителната работа за цезий е A₀ = 1,9 eV. Фотон с λ = 450 nm попада върху повърхността. Ще има ли фотоефект?</p>
+      <p>Първо намираме енергията на фотона:</p>
+      <div class="formula-box">
+        <div class="formula">E = hc/λ = (4,14·10⁻¹⁵ × 3·10⁸) / 4,5·10⁻⁷ ≈ 2,76 eV</div>
+        <div class="formula-desc">2,76 eV > 1,9 eV → <strong>Да, фотоефектът настъпва!</strong><br>E_к max = 2,76 − 1,9 = 0,86 eV</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="t4-quiz">
+    <div class="quiz-section">
+      <h3>🎯 Провери се</h3>
+      <div class="quiz-q">
+        <div class="q-num">Въпрос 1 / 3</div>
+        <div class="q-text">Кой фотон носи повече енергия — червен (λ ≈ 700 nm) или виолетов (λ ≈ 400 nm)?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Червеният</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,true)">Виолетовият</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Еднаква енергия</button>
+        </div>
+        <div class="quiz-explanation">E = hc/λ → по-малко λ = по-голяма енергия. Виолетовата светлина има по-къса вълна → по-енергични фотони.</div>
+      </div>
+
+      <div class="quiz-q">
+        <div class="q-num">Въпрос 2 / 3</div>
+        <div class="q-text">Фотон с E = 3 eV удря метал с отделителна работа A₀ = 4 eV. Какво ще стане?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkAnswer(this,true)">Няма да има фотоефект — фотонът няма достатъчно енергия</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Електронът ще се отдели с E_к = 1 eV</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Ще се отделят 2 електрона</button>
+        </div>
+        <div class="quiz-explanation">hν = 3 eV < A₀ = 4 eV → енергията на фотона не е достатъчна → фотоефектът не настъпва. Трябва фотон с поне 4 eV.</div>
+      </div>
+
+      <div class="quiz-q">
+        <div class="q-num">Въпрос 3 / 3</div>
+        <div class="q-text">Какво е отделителната работа A₀?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Енергията на фотона</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,false)">Кинетичната енергия на електрона</button>
+          <button class="quiz-opt" onclick="checkAnswer(this,true)">Минималната енергия, нужна за да се отдели електрон от повърхността на метала</button>
+        </div>
+        <div class="quiz-explanation">A₀ е „бариерата" — минимумът енергия, нужен за отделяне на електрон. Различна е за различните метали.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /content -->
+
+<!-- Progress -->
+<div class="progress-wrap" id="progressWrap">
+  <span class="prog-emoji">📊</span>
+  <span id="progressText">0 / 12 верни</span>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>Направено с <span class="heart">❤️</span> за Алиса</p>
+  <p style="margin-top:0.4rem; font-size:0.8rem; opacity:0.5;">Успех на изпита! 🌟</p>
+</div>
+
+<script>
+// Particles
+const particlesEl = document.getElementById('particles');
+const colors = ['#7c6ef5','#4ecdc4','#ff6b9d','#f5a623'];
+for (let i = 0; i < 30; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.background = colors[Math.floor(Math.random() * colors.length)];
+  p.style.animationDuration = (8 + Math.random() * 15) + 's';
+  p.style.animationDelay = (-Math.random() * 20) + 's';
+  p.style.width = p.style.height = (2 + Math.random() * 4) + 'px';
+  particlesEl.appendChild(p);
+}
+
+// Tab switching
+function switchTab(btn, contentId) {
+  const parent = btn.closest('.topic');
+  parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  parent.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(contentId).classList.add('active');
+}
+
+// Quiz logic
+let totalCorrect = 0;
+let totalAnswered = 0;
+const totalQuestions = 12;
+
+function checkAnswer(btn, isCorrect) {
+  const qBlock = btn.closest('.quiz-q');
+  if (qBlock.classList.contains('answered')) return;
+  qBlock.classList.add('answered');
+  totalAnswered++;
+
+  const allOpts = qBlock.querySelectorAll('.quiz-opt');
+  allOpts.forEach(o => {
+    o.classList.add('selected');
+    if (o !== btn) o.classList.add('dimmed');
+  });
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    totalCorrect++;
+  } else {
+    btn.classList.add('wrong');
+    // highlight the correct one
+    allOpts.forEach(o => {
+      if (o.getAttribute('onclick').includes('true')) {
+        o.classList.remove('dimmed');
+        o.classList.add('correct');
+      }
+    });
+  }
+
+  // Show explanation
+  const expl = qBlock.querySelector('.quiz-explanation');
+  if (expl) expl.classList.add('show');
+
+  // Update progress
+  updateProgress();
+}
+
+function updateProgress() {
+  document.getElementById('progressText').textContent = totalCorrect + ' / ' + totalAnswered + ' верни';
+  const wrap = document.getElementById('progressWrap');
+  if (totalAnswered === totalQuestions) {
+    const pct = Math.round(totalCorrect / totalQuestions * 100);
+    let emoji = '🌟';
+    if (pct >= 90) emoji = '🏆';
+    else if (pct >= 70) emoji = '💪';
+    else if (pct >= 50) emoji = '📚';
+    else emoji = '🤔';
+    wrap.querySelector('.prog-emoji').textContent = emoji;
+    document.getElementById('progressText').textContent = totalCorrect + '/' + totalQuestions + ' — ' + pct + '%';
+  }
+}
+
+// Nav active state on scroll
+const sections = document.querySelectorAll('.topic');
+const navLinks = document.querySelectorAll('.nav-pill');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// Smooth scroll
+navLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
